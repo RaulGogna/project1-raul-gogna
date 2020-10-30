@@ -1,0 +1,14 @@
+<div class="col-3">
+    <img class="w-100" id="avatar" src="{{photo}}" alt="">
+</div>
+<div class="col-9">
+    <h4>{{name}}</h4>
+    <h4>
+        <small class="text-muted">{{email}}</small>
+    </h4>
+    {{#if me}}
+    <p>
+        <a href="edit-profile.html" class="btn btn-primary">Edit profile</a>
+    </p>
+    {{/if}}
+</div>

@@ -1,0 +1,71 @@
+<html>
+  <head>
+    <title>Exercise 3</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">SanviPop</a>
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="add-product.html">Add product</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="profile.html">My profile</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="#" id="logout">Logout</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="container">
+      <form action="#" class="mt-4" id="newProduct" novalidate>
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input type="text" class="form-control" name="title" id="title" placeholder="Product you are selling">
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea class="form-control" id="description" name="description" rows="3" placeholder="Write something..."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="price">Price</label>
+          <input type="number" step="0.01" class="form-control" name="price" id="price" placeholder="Price">
+        </div>
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select id="category" class="form-control">
+            <option value="0" selected>Choose a category...</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="image">Main photo</label>
+          <input type="file" class="form-control" id="image" name="image">
+        </div>
+        <img src="" alt="" id="imgPreview" class="img-thumbnail">
+  
+        <div class="row">
+          <div class="col-auto">
+            <button type="submit" class="btn btn-primary btn-lg">Create</button>
+          </div>
+          <div class="alert alert-danger col hidden" id="errorMsg">
+            All fields are mandatory!
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <script src="dist/vendors.bundle.js"></script>
+    <script src="dist/commons.bundle.js"></script>
+    <script src="dist/add-product.bundle.js"></script>
+  </body>
+</html>

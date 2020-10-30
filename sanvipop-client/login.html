@@ -1,0 +1,36 @@
+<html>
+
+<head>
+  <title>Login | FoodScore</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <nav class="navbar navbar-expand navbar-dark bg-dark">
+    <a class="navbar-brand" href="index.html">SanviPop</a>
+  </nav>
+
+  <div class="container">
+    <form action="#" id="form-login" class="mt-4" method="POST" role="form">
+      <legend>Welcome to FoodScore!</legend>
+
+      <div class="form-group">
+        <label for="correo">Email:</label>
+        <input type="email" class="form-control" name="email" id="email" placeholder="Email" required>
+        <label for="password">Password:</label>
+        <input type="password" class="form-control" name="password" id="password" placeholder="Password" required>
+      </div>
+      <p class="text-danger" id="errorInfo"></p>
+      <a class="btn btn-secondary" href="/register.html" role="button">Create account</a>
+      <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+  </div>
+
+  <script src="dist/vendors.bundle.js"></script>
+  <script src="dist/commons.bundle.js"></script>
+  <script src="dist/login.bundle.js"></script>
+</body>
+
+</html>

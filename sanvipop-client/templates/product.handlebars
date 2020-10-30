@@ -1,0 +1,43 @@
+<a href="product-detail.html?id={{id}}"><img class="card-img-top" src="{{mainPhoto}}"></a>
+<div class="card-body">
+    <h5 class="card-title"><a href="product-detail.html?id={{id}}">{{title}}</a></h5>
+    <p class="card-text">{{description}}</p>
+    <div class="row text-muted">
+        <div class="col-auto">{{category}}</div>
+        <div class="col text-muted text-right">
+            {{price}} €
+        </div>
+    </div>
+</div>
+<div class="card-footer bg-transparent">
+    <div class="row">
+        <div class="col-auto avatar pl-1 pr-1">
+            <a href="profile.html?id={{owner.id}}">
+                <img src="{{owner.photo}}" class="rounded-circle">
+            </a>
+        </div>
+        <div class="col">
+            <div class="name">
+                <a href="profile.html?id={{owner.id}}">
+                    {{owner.name}}
+                </a>
+            </div>
+            <div><small class="text-muted">{{datePublished}}</small></div>
+        </div>
+        {{#if mine}}
+        <div class="col-auto">
+            <button class="btn btn-outline-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+        </div>
+        {{/if}}
+        <div class="col-auto">
+            <div class="text-muted text-right">
+                <small>{{numVisits}} <i class="far fa-eye"></i></small>
+            </div>
+            <div class="text-right text-muted">
+                <small>{{distance}} km</i></small>
+            </div>
+        </div>
+    </div>
+    </div>
+    
+</div>

@@ -1,0 +1,49 @@
+@media (min-width: 576px) {
+    .card-columns {
+        column-count: 2;
+    }
+}
+
+@media (min-width: 992px) {
+    .card-columns {
+        column-count: 3;
+    }
+}
+
+#errorMsg.hidden {
+    opacity: 0;
+}
+
+#errorMSg {
+    opacity: 1;
+    transition: opacity .5s linear;
+}
+
+.card > .card-footer {
+    font-size: smaller;
+}
+
+.card-body .card-text {
+    white-space: pre-wrap;
+}
+
+.card-footer .avatar img {
+    width: 40px;
+    cursor: pointer;
+}
+
+.card-footer .name {
+    color: #385898;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.card-footer .name:hover {
+    text-decoration: underline;
+}
+
+#map {
+    width: 100%;
+    height: 300px;
+    margin-bottom: 20px;
+}

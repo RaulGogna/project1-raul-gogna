@@ -1,0 +1,83 @@
+<html>
+
+<head>
+  <title>Edit profile | FoodScore</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">SanviPop</a>
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="index.html">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="add-product.html">Add product</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="profile.html">My profile</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="#" id="logout">Logout</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <form action="#" id="form-profile" class="mt-4" method="POST" role="form">
+      <legend>Edit profile</legend>
+
+      <div class="form-group">
+        <label for="correo">Email:</label>
+        <input type="email" class="form-control" name="email" id="email" placeholder="Email">
+        <label for="name">Name:</label>
+        <input type="text" class="form-control" name="nameUser" id="name" placeholder="Name">
+      </div>
+      <p class="text-danger" id="errorInfo1"></p>
+      <p class="text-success" id="okInfo1"></p>
+      <button type="submit" class="btn btn-primary">Edit profile</button>
+    </form>
+    <form action="#" id="form-photo" class="mt-4" method="POST" role="form">
+      <legend>Edit photo</legend>
+
+      <div class="form-group">
+          <input type="file" class="form-control" id="image" name="image">
+      </div>
+      <div class="row">
+        <div class="col" class="w-100">
+            <img class="w-100" id="photo" src="" alt="">
+        </div>
+        <div class="col">
+            <img class="d-none w-100" src="" alt="" id="imgPreview">
+        </div>
+      </div>
+      <p class="text-danger" id="errorInfo2"></p>
+      <p class="text-success" id="okInfo2"></p>
+      <button type="submit" class="btn btn-primary">Edit photo</button>
+    </form>
+    <form action="#" id="form-password" class="mt-4" method="POST" role="form">
+      <legend>Edit password</legend>
+
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+        <label for="password2">Repeat password:</label>
+        <input type="password" class="form-control" name="password2" id="password2" placeholder="Repeat password">
+      </div>
+      <p class="text-danger" id="errorInfo3"></p>
+      <p class="text-success" id="okInfo3"></p>
+      <button type="submit" class="btn btn-primary">Edit password</button>
+    </form>
+  </div>
+
+  <script src="dist/vendors.bundle.js"></script>
+  <script src="dist/commons.bundle.js"></script>
+  <script src="dist/edit-profile.bundle.js"></script>
+</body>
+
+</html>
