@@ -10,6 +10,10 @@ export interface ProductResponse {
     product: IProduct;
 }
 
+export interface CategoriesResponse {
+    categories: ICategory[];
+}
+
 export interface TokenResponse {
     accessToken: string;
 }

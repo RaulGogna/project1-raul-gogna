@@ -23,7 +23,7 @@ module.exports = {
     },
     module: {
         rules: [
-            { test: /\.handlebars$/, loader: "handlebars-loader" },
+            { test: /\.handlebars$/, loader: 'handlebars-loader' },
             {
                 test: /\.ts$/,
                 exclude: /node_modules/,
@@ -37,8 +37,8 @@ module.exports = {
         splitChunks: {
             cacheGroups: {
                 commons: {
-                    chunks: "initial",
-                    name: "commons",
+                    chunks: 'initial',
+                    name: 'commons',
                     minChunks: 2,
                     minSize: 0
                 },
@@ -56,4 +56,4 @@ module.exports = {
         compress: true, // Enable gzip compresion when serving content
         port: 8080 // Default
     }
-}
+};

@@ -1,38 +1,42 @@
 module.exports = {
-    "env": {
-        "browser": true,
-        "es2021": true
+    'env': {
+        'browser': true,
+        'es2021': true
     },
-    "extends": [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended"
+    'extends': [
+        'eslint:recommended',
+        'plugin:@typescript-eslint/recommended'
     ],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "ecmaVersion": 12,
-        "sourceType": "module"
+    'parser': '@typescript-eslint/parser',
+    'parserOptions': {
+        'ecmaVersion': 12,
+        'sourceType': 'module'
     },
-    "plugins": [
-        "@typescript-eslint"
+    'plugins': [
+        '@typescript-eslint'
     ],
-    "rules": {
-        "indent": [
-            "error",
+    'rules': {
+        'indent': [
+            'error',
             4
         ],
-        "linebreak-style": [
-            "error",
-            "unix"
+        'linebreak-style': [
+            'error',
+            'unix'
         ],
-        "quotes": [
-            "error",
-            "single"
+        'quotes': [
+            'error',
+            'single'
         ],
-        "semi": [
-            "error",
-            "always"
+        'semi': [
+            'error',
+            'always'
         ],
-        '@typescript-eslint/no-var-requires': "off",
-        "@typescript-eslint/explicit-function-return-type": ["error"],
+        'no-used-vars':[
+            'wars'
+        ],
+        '@typescript-eslint/no-var-requires': 'off',
+        '@typescript-eslint/explicit-function-return-type': ['error'],
+        //'prefer-const:warn' -> Para advertir variables let no modificadas, ergo const
     }
 };
