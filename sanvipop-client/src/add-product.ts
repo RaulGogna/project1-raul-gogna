@@ -46,7 +46,7 @@ async function validarFormulario(e: Event): Promise<void> {
     // eslint-disable-next-line no-undef
     if (!title || !description || !price || !category || ! productForm.image.value) {
         productForm.errorMsg.classList.remove('hidden');
-        setTimeout(() => productForm.errorMsg.classList.add('hidden'), 3000); 
+        setTimeout(() => productForm.errorMsg.add('hidden'), 3000); 
     }else {
         try{
             // eslint-disable-next-line no-unused-vars
