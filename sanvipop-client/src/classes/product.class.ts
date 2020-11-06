@@ -52,8 +52,7 @@ export class Product implements IProduct {
         });
         newCard.innerHTML = prodHtml;
 
-        let btnDelete = newCard.querySelector('button');
-        btnDelete.addEventListener('click', async () => {
+        newCard.querySelector('button').addEventListener('click', async () => {
             await this.delete();
             newCard.remove();
         });

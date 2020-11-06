@@ -1,14 +1,15 @@
 
-import {SERVER} from './constants';
-import {Http} from './classes/http.class';
-import {Product} from './classes/product.class';
-import {Category} from './classes/category.class';
 import '../styles.css';
+import { Category } from './classes/category.class';
+import { Http } from './classes/http.class';
+import { Product } from './classes/product.class';
+import { SERVER } from './constants';
 import { CategoriesResponse } from './interfaces/responses';
 
 let imagePreview: HTMLImageElement = null;
 let productForm: HTMLFormElement = null;
 let categories: HTMLElement = null;
+let errorMsg: HTMLDivElement = null;
 
 async function getCategories(): Promise<void> {
     const data = await Http.get<CategoriesResponse>(`${SERVER}/categories`);
@@ -24,7 +25,7 @@ function insertCategories({id, name}: Category){
 }
 
 function convertBase64(file: File): void {
-    let reader = new FileReader();
+    const reader = new FileReader();
 
     if (file) { // File has been selected (convert to Base64)
         reader.readAsDataURL(file);
@@ -43,13 +44,12 @@ async function validarFormulario(e: Event): Promise<void> {
     let price = +productForm.price.value;
     let category = +productForm.category.value;
     let mainPhoto = imagePreview.src;
-    // eslint-disable-next-line no-undef
-    if (!title || !description || !price || !category || ! productForm.image.value) {
-        productForm.errorMsg.classList.remove('hidden');
-        setTimeout(() => productForm.errorMsg.add('hidden'), 3000); 
+    
+    if (!title || !description || !price || !category || !productForm.image.value) {
+        errorMsg.classList.remove('hidden');
+        setTimeout(() => errorMsg.classList.add('hidden'), 3000); 
     }else {
         try{
-            // eslint-disable-next-line no-unused-vars
             let prod: Product = new Product({title, description, price, category, mainPhoto});
             await prod.post();
             location.assign('index.html');
@@ -64,7 +64,7 @@ window.addEventListener('DOMContentLoaded', () => {
     imagePreview = document.getElementById('imgPreview') as HTMLImageElement;
     productForm = document.getElementById('newProduct') as HTMLFormElement;
     categories = document.getElementById('category');
-
+    errorMsg = document.getElementById('errorMsg') as HTMLDivElement;
     getCategories();
     
     productForm.image.addEventListener('change', () =>{
