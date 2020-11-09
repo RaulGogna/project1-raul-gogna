@@ -1,4 +1,5 @@
 import { Auth } from "./classes/auth.class";
+import { Geolocation } from "./classes/geolocation.class";
 import { User } from "./classes/user.class";
 
 let newUserForm: HTMLFormElement = null;
@@ -17,36 +18,39 @@ function convertBase64(file: File): void {
     });
 }
 
+function showError(mssg: string, ok: boolean) {
+    errorInfo.innerText = mssg;
+    setTimeout(() => [errorInfo.innerText = null, ok ? location.assign('login.html') : '']
+        , 3000);
+}
 async function register(e: Event): Promise<void> {
     e.preventDefault();
+    let locations = Geolocation.getLocation();
     let name: string = (newUserForm.name as any).value;
     let email: string = newUserForm.email.value;
     let email2: string = newUserForm.email2.value;
     let password: string = newUserForm.password.value;
-    // let lat: string = newUserForm.lat.value;
-    // let lng: string = newUserForm.lng.value;
+    let lat: number = (await locations).latitude;
+    let lng: number = (await locations).longitude;
     let photo: string = imgPreview.src;
-
+    
+    if (email !== email2) {
+        showError('The emails must be same', false);
+        //ToDo meter todos los errores en el sweetAlert.
+        return;
+    }
     if (!name || !email || !email2 || !password || !newUserForm.avatar.value) {
-        if (email !== email2) {
-            errorInfo.innerText = 'The emails must be same';
-        }
-        errorInfo.innerText = 'All fields are mandatory!';
-        setTimeout(() => errorInfo.innerText = null, 3000);
+        showError('All fields are mandatory!', false);
+        return;
     } else {
-        const newUser: User = new User({ name, email, password, photo });
+        const newUser: User = new User({ name, email, password, photo, lat, lng });
         let respJson: any = null;
         try {
             await Auth.register(newUser);
-            errorInfo.innerText = 'Registered user successfully!';
-            setTimeout(() => [
-                errorInfo.innerText = null, 
-                location.assign('login.html')]
-                , 3000);
+            showError('Registered user successfully!', true);
         } catch (error) {
             respJson = await error.json();
-            errorInfo.innerText = respJson.message || respJson.error;
-            setTimeout(() => errorInfo.innerText = null, 3000);
+            showError(respJson.message || respJson.error, false);
             throw new Error();
         }
     }
@@ -56,7 +60,9 @@ window.addEventListener('DOMContentLoaded', () => {
     newUserForm = document.getElementById('form-register') as HTMLFormElement;
     imgPreview = document.getElementById('imgPreview') as HTMLImageElement;
     errorInfo = document.getElementById('errorInfo');
-
+    Geolocation.getLocation().then(x => {newUserForm.lat.value = x.latitude.toString()});
+    Geolocation.getLocation().then(x => {newUserForm.lng.value = x.longitude.toString()});
+    
     newUserForm.avatar.addEventListener('change', () => {
         convertBase64(newUserForm.avatar.files[0]);
     });
