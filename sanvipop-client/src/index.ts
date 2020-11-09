@@ -1,16 +1,18 @@
 import {Product} from './classes/product.class';
-import '../styles.css';
+import { Auth } from './classes/auth.class';
 
 let productsContainer: HTMLDivElement = null;
-let products: Product[] = null;
-let search: HTMLInputElement = null;
+let products: Product[] = [];
+let search = '';
 
-async function getAll(): Promise<void> {
+Auth.checkToken().catch(() => location.assign('login.html'));
+
+async function loadProducts(): Promise<void> {
     products = await Product.getAll();
     showProducts(products);
 }
 
-function showProducts(products: Product[]) {
+function showProducts(products: Product[]): void {
     while(productsContainer.firstChild){
         productsContainer.firstChild.remove();
     }
@@ -19,11 +21,18 @@ function showProducts(products: Product[]) {
 
 window.addEventListener('DOMContentLoaded', () => {
     productsContainer = document.getElementById('productsContainer') as HTMLDivElement;
-    search = document.getElementById('search') as HTMLInputElement;
-    getAll();
-    // eslint-disable-next-line no-unused-vars
-    search.addEventListener('keyup', () => {
-        let filterProducts = products.filter(p => p.title.includes(search.value) || p.description.includes(search.value));
+    loadProducts();
+
+    document.getElementById('logout').addEventListener('click', e => {
+        Auth.logout();
+        location.assign('login.html');
+    });
+    
+    document.getElementById('search').addEventListener('keyup', e => {
+        search = (e.target as HTMLInputElement).value;
+        let filterProducts = products.filter(p => 
+            p.title.includes(search.toLowerCase()) || 
+            p.description.includes(search.toLowerCase()));
         showProducts(filterProducts);
     });
 });
