@@ -13,4 +13,25 @@ export class User implements IUser {
     constructor(userJson: IUser){
         Object.assign(this, userJson);
     }
+
+    static async getProfile(id?: number): Promise<User>{
+        return;
+    }
+
+    static async saveProfile(name: string, email: string): Promise<void>{
+
+    }
+
+    static async saveAvatar(avatar: string): Promise<string>{
+        return;
+    }
+
+    static async savePassword(password: string): Promise<void>{
+
+    }
+
+    toHtml(): HTMLDivElement{
+        return;
+    }
+
 }
