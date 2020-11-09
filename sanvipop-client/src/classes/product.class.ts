@@ -27,12 +27,17 @@ export class Product implements IProduct {
     }
 
     static async getAll(): Promise<Product[]> {
-        let data = await Http.get<ProductsResponse>(`${SERVER}/products`);
+        const data = await Http.get<ProductsResponse>(`${SERVER}/products`);
         return data.products.map(pJson => new Product(pJson));
     }
 
+    static async get(id: number): Promise<Product>{
+        const data = await Http.get<ProductResponse>(`${SERVER}/products/${id}`);
+        return new Product(data.product);
+    }
+
     async post(): Promise<Product> {
-        let data = await Http.post<ProductResponse>(`${SERVER}/products`, this);
+        const data = await Http.post<ProductResponse>(`${SERVER}/products`, this);
         return new Product(data.product);
     }
 
@@ -52,10 +57,12 @@ export class Product implements IProduct {
         });
         newCard.innerHTML = prodHtml;
 
-        newCard.querySelector('button').addEventListener('click', async () => {
-            await this.delete();
-            newCard.remove();
-        });
+        if(this.mine){
+            newCard.querySelector('button').addEventListener('click', async () => {
+                await this.delete();
+                newCard.remove();
+            });
+        }
         return newCard;
     }
 }

@@ -12,12 +12,12 @@ async function login(e: Event){
     const password = loginForm.password.value;
 
     let userLogin: User = new User({email, password});
-        let resp: any = null; 
         try{
-            resp = await Auth.login(userLogin);
+            await Auth.login(userLogin);
             location.assign('index.html');
-        } catch(resp){
-            errorInfo.innerText = resp.statusText;
+        } catch(error){
+            const respJson = await error.json();
+            errorInfo.innerText = respJson.message || respJson.error;
             setTimeout(() => errorInfo.innerText = null, 3000);
             throw new Error();
         }
