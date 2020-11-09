@@ -1,5 +1,5 @@
 
-import '../styles.css';
+import { Auth } from './classes/auth.class';
 import { Category } from './classes/category.class';
 import { Http } from './classes/http.class';
 import { Product } from './classes/product.class';
@@ -66,6 +66,11 @@ window.addEventListener('DOMContentLoaded', () => {
     categories = document.getElementById('category');
     errorMsg = document.getElementById('errorMsg') as HTMLDivElement;
     getCategories();
+    
+    document.getElementById('logout').addEventListener('click', e => {
+        Auth.logout();
+        location.assign('login.html');
+    });
     
     productForm.image.addEventListener('change', () =>{
         convertBase64(productForm.image.files[0]);
