@@ -5,22 +5,22 @@ import { TokenResponse } from "./interfaces/responses";
 let loginForm: HTMLFormElement = null;
 let errorInfo: HTMLElement = null;
 
-async function login(e: Event){
+async function login(e: Event) {
 
     e.preventDefault();
     const email = loginForm.email.value;
     const password = loginForm.password.value;
 
-    let userLogin: User = new User({email, password});
-        try{
-            await Auth.login(userLogin);
-            location.assign('index.html');
-        } catch(error){
-            const respJson = await error.json();
-            errorInfo.innerText = respJson.message || respJson.error;
-            setTimeout(() => errorInfo.innerText = null, 3000);
-            throw new Error();
-        }
+    const userLogin: User = new User({ email, password });
+    try {
+        await Auth.login(userLogin);
+        location.assign('index.html');
+    } catch (error) {
+        const respJson = await error.json();
+        errorInfo.innerText = respJson.message || respJson.error;
+        setTimeout(() => errorInfo.innerText = null, 3000);
+        throw new Error();
+    }
 }
 
 window.addEventListener('DOMContentLoaded', () => {
