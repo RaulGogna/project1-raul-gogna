@@ -23,6 +23,7 @@ function showError(mssg: string, ok: boolean) {
     setTimeout(() => [errorInfo.innerText = null, ok ? location.assign('login.html') : '']
         , 3000);
 }
+
 async function register(e: Event): Promise<void> {
     e.preventDefault();
     let locations = Geolocation.getLocation();
