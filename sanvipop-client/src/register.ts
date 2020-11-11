@@ -1,10 +1,26 @@
+import Swal, { SweetAlertIcon, SweetAlertResult } from "sweetalert2";
 import { Auth } from "./classes/auth.class";
 import { Geolocation } from "./classes/geolocation.class";
 import { User } from "./classes/user.class";
 
 let newUserForm: HTMLFormElement = null;
 let imgPreview: HTMLImageElement = null;
-let errorInfo: HTMLElement = null;
+let message: string = '';
+
+function showError(textIcon: string, title: string, message: string, ok: true): Promise<SweetAlertResult<any>> {
+    return Swal.fire({
+        icon: textIcon as SweetAlertIcon,
+        title: title,
+        text: message,
+        showConfirmButton: ok,
+        showClass: {
+            popup: 'animate__animated animate__fadeInDown'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+        }
+    })
+}
 
 function convertBase64(file: File): void {
     const reader = new FileReader();
@@ -18,12 +34,6 @@ function convertBase64(file: File): void {
     });
 }
 
-function showError(mssg: string, ok: boolean) {
-    errorInfo.innerText = mssg;
-    setTimeout(() => [errorInfo.innerText = null, ok ? location.assign('login.html') : '']
-        , 3000);
-}
-
 async function register(e: Event): Promise<void> {
     e.preventDefault();
     let locations = Geolocation.getLocation();
@@ -34,25 +44,33 @@ async function register(e: Event): Promise<void> {
     let lat: number = (await locations).latitude;
     let lng: number = (await locations).longitude;
     let photo: string = imgPreview.src;
-    
+
     if (email !== email2) {
-        showError('The emails must be same', false);
-        //ToDo meter todos los errores en el sweetAlert.
+        message = 'The emails must be same!';
+        showError('warning', 'Oops...', message, true);
         return;
     }
     if (!name || !email || !email2 || !password || !newUserForm.avatar.value) {
-        showError('All fields are mandatory!', false);
+        message = 'All fields are mandatory!';
+        showError('error', 'Oops...', message, true);
         return;
+
     } else {
         const newUser: User = new User({ name, email, password, photo, lat, lng });
         let respJson: any = null;
         try {
             await Auth.register(newUser);
-            showError('Registered user successfully!', true);
+            message = 'Registered user successfully!';
+            showError('success', 'OuuuuYeah!', message, true)
+                .then(() => location.assign('login.html'));
         } catch (error) {
             respJson = await error.json();
-            showError(respJson.message || respJson.error, false);
-            throw new Error();
+            showError(
+                'error',
+                'Oops.. Algo ha ido mal!',
+                respJson.message || respJson.error,
+                true
+            )
         }
     }
 }
@@ -60,10 +78,9 @@ async function register(e: Event): Promise<void> {
 window.addEventListener('DOMContentLoaded', () => {
     newUserForm = document.getElementById('form-register') as HTMLFormElement;
     imgPreview = document.getElementById('imgPreview') as HTMLImageElement;
-    errorInfo = document.getElementById('errorInfo');
-    Geolocation.getLocation().then(x => {newUserForm.lat.value = x.latitude.toString()});
-    Geolocation.getLocation().then(x => {newUserForm.lng.value = x.longitude.toString()});
-    
+    Geolocation.getLocation().then(x => { newUserForm.lat.value = x.latitude.toString() });
+    Geolocation.getLocation().then(x => { newUserForm.lng.value = x.longitude.toString() });
+
     newUserForm.avatar.addEventListener('change', () => {
         convertBase64(newUserForm.avatar.files[0]);
     });

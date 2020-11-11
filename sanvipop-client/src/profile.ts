@@ -1,4 +1,5 @@
 import * as mapboxgl from 'mapbox-gl';
+import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { Auth } from "./classes/auth.class";
 import { User } from "./classes/user.class";
 import { MAPBOX_TOKEN } from "./constants";
@@ -10,15 +11,30 @@ let marker: mapboxgl.Marker = null;
 const token: string = MAPBOX_TOKEN;
 let userProfile: User = null;
 
-async function getProfile(): Promise<User>{
+function showError(textIcon: string, title: string, contexText: string, ok: true) {
+    Swal.fire({
+        icon: textIcon as SweetAlertIcon,
+        titleText: title,
+        text: contexText,
+        showConfirmButton: ok,
+        showClass: {
+            popup: 'animate__animated animate__fadeInDown'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+        }
+    })
+}
+
+async function getProfile(): Promise<User> {
     const idUser: number = + new URLSearchParams(location.search).get('id');
-    try{
+    try {
         userProfile = await User.getProfile(idUser);
-        if(userProfile) profile.appendChild(userProfile.toHtml());
+        if (userProfile) profile.appendChild(userProfile.toHtml());
         return userProfile;
-    } catch(error){
+    } catch (error) {
         const respJson = await error.json();
-        throw new Error(respJson.message || respJson.error);
+        showError('error', 'Oops...', respJson.message || respJson.error, true);
     }
 }
 
@@ -32,7 +48,7 @@ function createMap(userProfile: User): mapboxgl.Map {
     });
 }
 
-async function getLocation(){
+async function getLocation() {
     userProfile = await getProfile();
     map = createMap(userProfile);
     marker = createMarker('red', userProfile);

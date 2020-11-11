@@ -1,4 +1,5 @@
 import * as mapboxgl from 'mapbox-gl';
+import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { Auth } from "./classes/auth.class";
 import { Product } from "./classes/product.class";
 import { MAPBOX_TOKEN } from "./constants";
@@ -10,6 +11,20 @@ let marker: mapboxgl.Marker = null;
 const token: string = MAPBOX_TOKEN;
 let product: Product = null;
 
+function showError(textIcon: string, title: string, contexText: string, ok: true) {
+    Swal.fire({
+        icon: textIcon as SweetAlertIcon,
+        titleText: title,
+        text: contexText,
+        showConfirmButton: ok,
+        showClass: {
+            popup: 'animate__animated animate__fadeInDown'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+        }
+    })
+}
 
 async function getProduct(): Promise<Product> {
     const idProduct: number = + new URLSearchParams(location.search).get('id');
@@ -22,7 +37,7 @@ async function getProduct(): Promise<Product> {
         return product;
     } catch (error) {
         const respJson = await error.json();
-        throw new Error(respJson.message || respJson.error);
+        showError('error', 'Oops...', respJson.message || respJson.error, true);
     }
 }
 
@@ -36,7 +51,7 @@ function createMap(product: Product): mapboxgl.Map {
     });
 }
 
-async function getLocation(){
+async function getLocation() {
     product = await getProduct();
     map = createMap(product);
     marker = createMarker('red', product);
@@ -47,7 +62,7 @@ function createMarker(color: string, product: Product): mapboxgl.Marker {
         .addTo(map);
 }
 
-window.addEventListener('DOMContentLoaded', async () => {
+window.addEventListener('DOMContentLoaded', () => {
     container = document.getElementById('productContainer') as HTMLDivElement;
     mapDiv = document.getElementById('map') as HTMLDivElement;
 

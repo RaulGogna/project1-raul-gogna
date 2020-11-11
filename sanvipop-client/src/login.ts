@@ -1,9 +1,23 @@
 import { Auth } from "./classes/auth.class";
 import { User } from "./classes/user.class";
-import { TokenResponse } from "./interfaces/responses";
+import Swal, { SweetAlertIcon } from 'sweetalert2';
 
 let loginForm: HTMLFormElement = null;
-let errorInfo: HTMLElement = null;
+
+function showError(textIcon: string, title: string, contexText: string, ok: true) {
+    Swal.fire({
+        icon: textIcon as SweetAlertIcon,
+        titleText: title,
+        text: contexText,
+        showConfirmButton: ok,
+        showClass: {
+            popup: 'animate__animated animate__fadeInDown'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+        }
+    })
+}
 
 async function login(e: Event) {
 
@@ -17,14 +31,11 @@ async function login(e: Event) {
         location.assign('index.html');
     } catch (error) {
         const respJson = await error.json();
-        errorInfo.innerText = respJson.message || respJson.error;
-        setTimeout(() => errorInfo.innerText = null, 3000);
-        throw new Error();
+        showError('error', 'Oops...', respJson.message || respJson.error, true);
     }
 }
 
 window.addEventListener('DOMContentLoaded', () => {
     loginForm = document.getElementById('form-login') as HTMLFormElement;
-    errorInfo = document.getElementById('errorInfo');
     loginForm.addEventListener('submit', login);
 });

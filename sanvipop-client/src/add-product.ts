@@ -1,4 +1,5 @@
 
+import Swal, { SweetAlertIcon, SweetAlertResult } from 'sweetalert2';
 import { Auth } from './classes/auth.class';
 import { Category } from './classes/category.class';
 import { Http } from './classes/http.class';
@@ -10,13 +11,29 @@ let imagePreview: HTMLImageElement = null;
 let productForm: HTMLFormElement = null;
 let categories: HTMLElement = null;
 let errorMsg: HTMLDivElement = null;
+let message: string = '';
+
+function showError(textIcon: string, title: string, textContext: string, ok: true): Promise<SweetAlertResult<any>> {
+    return Swal.fire({
+        icon: textIcon as SweetAlertIcon,
+        titleText: title,
+        text: textContext,
+        showConfirmButton: ok,
+        showClass: {
+            popup: 'animate__animated animate__fadeInDown'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+        }
+    })
+}
 
 async function getCategories(): Promise<void> {
     const data = await Http.get<CategoriesResponse>(`${SERVER}/categories`);
     data.categories.forEach(p => insertCategories(new Category(p)));
 }
 
-function insertCategories({id, name}: Category){
+function insertCategories({ id, name }: Category) {
 
     let option = document.createElement('option');
     option.setAttribute('value', id);
@@ -39,23 +56,25 @@ function convertBase64(file: File): void {
 
 async function validarFormulario(e: Event): Promise<void> {
     e.preventDefault();
-    let title =  (productForm.title as any).value;
+    let title = (productForm.title as any).value;
     let description = productForm.description.value;
     let price = +productForm.price.value;
     let category = +productForm.category.value;
     let mainPhoto = imagePreview.src;
-    
+
     if (!title || !description || !price || !category || !productForm.image.value) {
-        errorMsg.classList.remove('hidden');
-        setTimeout(() => errorMsg.classList.add('hidden'), 3000); 
-    }else {
-        try{
-            let prod: Product = new Product({title, description, price, category, mainPhoto});
+        message = 'All fields are mandatory!';
+        showError('error', 'Oops...', message, true);
+    } else {
+        try {
+            let prod: Product = new Product({ title, description, price, category, mainPhoto });
             await prod.post();
-            location.assign('index.html');
+            message = 'All fields are mandatory!';
+            showError('success', 'OuuuuYeah!', message, true)
+                .then(() => location.assign('login.html'));
         }
-        catch(e){
-            console.log(e);
+        catch (error) {
+            showError('error', 'Oops...', error, true);
         }
     }
 }
@@ -64,17 +83,15 @@ window.addEventListener('DOMContentLoaded', () => {
     imagePreview = document.getElementById('imgPreview') as HTMLImageElement;
     productForm = document.getElementById('newProduct') as HTMLFormElement;
     categories = document.getElementById('category');
-    errorMsg = document.getElementById('errorMsg') as HTMLDivElement;
     getCategories();
-    
+
+    productForm.image.addEventListener('change', () => {
+        convertBase64(productForm.image.files[0]);
+    });
+    productForm.addEventListener('submit', validarFormulario);
+
     document.getElementById('logout').addEventListener('click', e => {
         Auth.logout();
         location.assign('login.html');
     });
-    
-    productForm.image.addEventListener('change', () =>{
-        convertBase64(productForm.image.files[0]);
-    });
-
-    productForm.addEventListener('submit', validarFormulario);
 });
