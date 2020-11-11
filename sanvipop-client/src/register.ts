@@ -7,11 +7,11 @@ let newUserForm: HTMLFormElement = null;
 let imgPreview: HTMLImageElement = null;
 let message: string = '';
 
-function showError(textIcon: string, title: string, message: string, ok: true): Promise<SweetAlertResult<any>> {
+function showError(textIcon: string, title: string, contexText: string, ok: true): Promise<SweetAlertResult<any>> {
     return Swal.fire({
         icon: textIcon as SweetAlertIcon,
         title: title,
-        text: message,
+        text: contexText,
         showConfirmButton: ok,
         showClass: {
             popup: 'animate__animated animate__fadeInDown'

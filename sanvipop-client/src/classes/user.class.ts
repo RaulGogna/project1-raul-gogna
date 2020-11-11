@@ -25,7 +25,7 @@ export class User implements IUser {
     }
 
     static async saveProfile(name: string, email: string): Promise<void> {
-        await Http.put<void>(`${SERVER}/users/me`, {name, email});
+        await Http.put<void>(`${SERVER}/users/me`, { name, email });
     }
 
     static async saveAvatar(avatar: string): Promise<string> {
@@ -33,7 +33,7 @@ export class User implements IUser {
         return data;
     }
 
-    static async getAvatar(): Promise<string>{
+    static async getAvatar(): Promise<string> {
         const data = await Http.get<string>(`${SERVER}/users/me/photo`);
         return data;
     }

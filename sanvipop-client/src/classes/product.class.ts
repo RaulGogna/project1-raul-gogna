@@ -31,7 +31,7 @@ export class Product implements IProduct {
         return data.products.map(pJson => new Product(pJson));
     }
 
-    static async get(id: number): Promise<Product>{
+    static async get(id: number): Promise<Product> {
         const data = await Http.get<ProductResponse>(`${SERVER}/products/${id}`);
         return new Product(data.product);
     }
@@ -57,7 +57,7 @@ export class Product implements IProduct {
         });
         newCard.innerHTML = prodHtml;
 
-        if(this.mine){
+        if (this.mine) {
             newCard.querySelector('button').addEventListener('click', async () => {
                 await this.delete();
                 newCard.remove();

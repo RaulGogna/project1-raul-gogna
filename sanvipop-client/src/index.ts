@@ -1,4 +1,4 @@
-import {Product} from './classes/product.class';
+import { Product } from './classes/product.class';
 import { Auth } from './classes/auth.class';
 
 let productsContainer: HTMLDivElement = null;
@@ -13,7 +13,7 @@ async function loadProducts(): Promise<void> {
 }
 
 function showProducts(products: Product[]): void {
-    while(productsContainer.firstChild){
+    while (productsContainer.firstChild) {
         productsContainer.firstChild.remove();
     }
     products.forEach(p => productsContainer.appendChild(p.toHtml()));
@@ -27,11 +27,11 @@ window.addEventListener('DOMContentLoaded', () => {
         Auth.logout();
         location.assign('login.html');
     });
-    
+
     document.getElementById('search').addEventListener('keyup', e => {
         search = (e.target as HTMLInputElement).value;
-        let filterProducts = products.filter(p => 
-            p.title.includes(search.toLowerCase()) || 
+        let filterProducts = products.filter(p =>
+            p.title.includes(search.toLowerCase()) ||
             p.description.includes(search.toLowerCase()));
         showProducts(filterProducts);
     });
