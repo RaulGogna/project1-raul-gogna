@@ -88,7 +88,7 @@ async function savePassword(e: Event): Promise<void>{
             await User.savePassword(password);
             showMessage(okInfo3, 'Password updated!');
         } catch(error){
-            throw new Error(error);        
+            showMessage(errorInfo3, 'Error was captured');
         }
     }
 }
