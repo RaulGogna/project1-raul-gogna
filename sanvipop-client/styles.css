@@ -42,6 +42,10 @@
     text-decoration: underline;
 }
 
+.img-thumbnail{
+    display: block;
+    max-width: 100%;
+}
 #map {
     width: 100%;
     height: 300px;

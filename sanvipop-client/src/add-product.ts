@@ -1,5 +1,7 @@
 
 import Swal, { SweetAlertIcon, SweetAlertResult } from 'sweetalert2';
+import Cropper from 'cropperjs';
+
 import { Auth } from './classes/auth.class';
 import { Category } from './classes/category.class';
 import { Http } from './classes/http.class';
@@ -7,10 +9,10 @@ import { Product } from './classes/product.class';
 import { SERVER } from './constants';
 import { CategoriesResponse } from './interfaces/responses';
 
+
 let imagePreview: HTMLImageElement = null;
 let productForm: HTMLFormElement = null;
 let categories: HTMLElement = null;
-let errorMsg: HTMLDivElement = null;
 let message: string = '';
 
 function showError(textIcon: string, title: string, textContext: string, ok: true): Promise<SweetAlertResult<any>> {
@@ -50,6 +52,18 @@ function convertBase64(file: File): void {
 
     reader.addEventListener('load', () => { //Converted into Base64 event (async)
         imagePreview.src = reader.result as string;
+        const cropper = new Cropper(imagePreview, { 
+            aspectRatio: 16 / 9, 
+            viewMode: 2,
+            zoomable: true,
+            cropBoxMovable: true,
+            minContainerWidth: 100,
+            minContainerHeight: 100,
+            autoCropArea: 0.5,
+            crop: () => {
+                cropper.moveTo(0,0);
+                imagePreview.src = cropper.getCroppedCanvas().toDataURL('image/jpeg');
+            }});
     });
 }
 
@@ -83,11 +97,17 @@ window.addEventListener('DOMContentLoaded', () => {
     imagePreview = document.getElementById('imgPreview') as HTMLImageElement;
     productForm = document.getElementById('newProduct') as HTMLFormElement;
     categories = document.getElementById('category');
+    
     getCategories();
 
     productForm.image.addEventListener('change', () => {
+        
         convertBase64(productForm.image.files[0]);
     });
+    productForm.image.addEventListener('cropstart', (event: any ) => {
+        console.log(event.detail.originalEvent);
+        console.log(event.detail.action);
+      });
     productForm.addEventListener('submit', validarFormulario);
 
     document.getElementById('logout').addEventListener('click', e => {
