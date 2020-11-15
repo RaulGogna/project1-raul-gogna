@@ -2,10 +2,12 @@ import Swal, { SweetAlertIcon, SweetAlertResult } from "sweetalert2";
 import { Auth } from "./classes/auth.class";
 import { Geolocation } from "./classes/geolocation.class";
 import { User } from "./classes/user.class";
+import Cropper from 'cropperjs';
 
 let newUserForm: HTMLFormElement = null;
 let imgPreview: HTMLImageElement = null;
 let message: string = '';
+let cropper: Cropper = null;
 
 function showError(textIcon: string, title: string, contexText: string, ok: true): Promise<SweetAlertResult<any>> {
     return Swal.fire({
@@ -31,7 +33,22 @@ function convertBase64(file: File): void {
 
     reader.addEventListener('load', () => { //Converted into Base64 event (async)
         imgPreview.src = reader.result as string;
+        setTimeout(initCropper, 1000);
     });
+}
+
+function initCropper(): Cropper{
+    cropper = new Cropper(imgPreview, {
+        aspectRatio: 1,
+        viewMode: 2,
+        zoomable: true,
+        cropBoxMovable: true,
+        crop: function (e) {
+            console.log(e.detail.x);
+            console.log(e.detail.y);
+        }
+    });
+    return cropper;
 }
 
 async function register(e: Event): Promise<void> {
@@ -80,9 +97,20 @@ window.addEventListener('DOMContentLoaded', () => {
     imgPreview = document.getElementById('imgPreview') as HTMLImageElement;
     Geolocation.getLocation().then(x => { newUserForm.lat.value = x.latitude.toString() });
     Geolocation.getLocation().then(x => { newUserForm.lng.value = x.longitude.toString() });
-
+    
     newUserForm.avatar.addEventListener('change', () => {
         convertBase64(newUserForm.avatar.files[0]);
+    });
+
+    document.getElementById('crop_button').addEventListener('click', (event: any) => {
+        if(!cropper){
+            message = "Preparate para morir! Debes seleccionar una imagen antes";
+            showError('error', 'Has cometido un error!', message, true);
+        }
+        else {
+            imgPreview.src = cropper.getCroppedCanvas().toDataURL('image/jpeg');
+            cropper.destroy();
+        }
     });
 
     newUserForm.addEventListener('submit', register);

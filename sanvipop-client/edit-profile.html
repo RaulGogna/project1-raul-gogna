@@ -6,6 +6,8 @@
   <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.9/cropper.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.9/cropper.min.js"></script>
 </head>
 
 <body>
@@ -52,6 +54,7 @@
       <div class="row">
         <div class="col" class="w-100">
             <img class="w-100" id="photo" src="" alt="">
+            <button type="button" class="btn btn-primary" id="crop_button">Crop Image</button>
         </div>
         <div class="col">
             <img class="d-none w-100" src="" alt="" id="imgPreview">

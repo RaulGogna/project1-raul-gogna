@@ -1,6 +1,7 @@
-import Swal, { SweetAlertIcon } from "sweetalert2";
-import { Auth } from "./classes/auth.class";
-import { User } from "./classes/user.class";
+import Swal, { SweetAlertIcon } from 'sweetalert2';
+import { Auth } from './classes/auth.class';
+import { User } from './classes/user.class';
+import Cropper from 'cropperjs';
 
 let profileForm: HTMLFormElement = null;
 // let errorInfo1: HTMLElement = null;
@@ -15,7 +16,7 @@ let photoPreview: HTMLImageElement = null;
 let psswForm: HTMLFormElement = null;
 // let errorInfo3: HTMLElement = null;
 // let okInfo3: HTMLElement = null;
-
+let cropper: Cropper = null;
 let message: string = '';
 
 function showError(textIcon: string, title: string, textContext: string, ok: true) {
@@ -42,14 +43,24 @@ function convertBase64(file: File): void {
 
     reader.addEventListener('load', () => { //Converted into Base64 event (async)
         imgPreview.src = reader.result as string;
+        setTimeout(initCropper, 1000);
         imgPreview.classList.remove('d-none');
     });
 }
 
-// function showMessage(element: HTMLElement, mssg: string) {
-//     element.innerText = mssg;
-//     setTimeout(() => element.innerText = null, 3000);
-// }
+function initCropper(): Cropper{
+    cropper = new Cropper(imgPreview, {
+        aspectRatio: 16 / 9,
+        viewMode: 2,
+        zoomable: true,
+        cropBoxMovable: true,
+        crop: function (e) {
+            console.log(e.detail.x);
+            console.log(e.detail.y);
+        }
+    });
+    return cropper;
+}
 
 async function saveProfile(e: Event): Promise<void> {
     e.preventDefault();
@@ -80,11 +91,9 @@ async function saveAvatar(e: Event): Promise<void> {
     if (!image) showError('error', 'Oops...', message, true);
     else {
         try {
-            const data = await User.saveAvatar(imgPreview.src);
+            await User.saveAvatar(imgPreview.src);
             message = 'Avatar updated successfully!';
             showError('success', 'OuuuuYeah!', message, true);
-            imgPreview.classList.add('d-none');
-            photoForm.photoPreview.value = data;
         } catch (error) {
             showError('error', 'Oops...', error, true);
         }
@@ -130,6 +139,18 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     photoForm.image.addEventListener('change', () => {
         convertBase64(photoForm.image.files[0]);
+    });
+
+    document.getElementById('crop_button').addEventListener('click', (event: any) => {
+        if(!cropper){
+            message = "Preparate para morir! Debes seleccionar una imagen antes";
+            showError('error', 'Has cometido un error!', message, true);
+        }
+        else {
+            photoPreview.src = cropper.getCroppedCanvas().toDataURL('image/jpeg');
+            imgPreview.classList.add('d-none');
+            cropper.destroy();
+        }
     });
     photoForm.addEventListener('submit', saveAvatar);
 

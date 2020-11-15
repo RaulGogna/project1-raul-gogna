@@ -6,6 +6,8 @@
   <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.9/cropper.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.9/cropper.min.js"></script>
 </head>
 
 <body>
@@ -36,11 +38,11 @@
       <div class="form-row">
         <div class="form-group col">
           <label for="lat">Latitude:</label>
-          <input type="text" class="form-control"  id="lat" name="lat" placeholder="Geolocating..." readonly>
+          <input type="text" class="form-control" id="lat" name="lat" placeholder="Geolocating..." readonly>
         </div>
         <div class="form-group col">
           <label for="lng">Longitude:</label>
-          <input type="text" class="form-control"  id="lng" name="lng" placeholder="Geolocating..." readonly>
+          <input type="text" class="form-control" id="lng" name="lng" placeholder="Geolocating..." readonly>
         </div>
       </div>
       <div class="form-group">
@@ -48,6 +50,7 @@
         <input type="file" class="form-control" id="avatar" name="avatar">
       </div>
       <img src="" alt="" id="imgPreview" class="img-thumbnail">
+      <button type="button" class="btn btn-primary btn-lg" id="crop_button">Crop Image</button>
       <p class="text-danger" id="errorInfo"></p>
       <a class="btn btn-secondary" href="login.html" role="button">Go back</a>
       <button type="submit" class="btn btn-primary">Create account</button>
