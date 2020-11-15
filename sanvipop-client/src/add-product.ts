@@ -14,6 +14,7 @@ let imagePreview: HTMLImageElement = null;
 let productForm: HTMLFormElement = null;
 let categories: HTMLElement = null;
 let message: string = '';
+let cropper: Cropper = null;
 
 function showError(textIcon: string, title: string, textContext: string, ok: true): Promise<SweetAlertResult<any>> {
     return Swal.fire({
@@ -52,21 +53,23 @@ function convertBase64(file: File): void {
 
     reader.addEventListener('load', () => { //Converted into Base64 event (async)
         imagePreview.src = reader.result as string;
-        const cropper = new Cropper(imagePreview, { 
-            aspectRatio: 16 / 9, 
-            viewMode: 2,
-            zoomable: true,
-            cropBoxMovable: true,
-            minContainerWidth: 100,
-            minContainerHeight: 100,
-            autoCropArea: 0.5,
-            crop: () => {
-                cropper.moveTo(0,0);
-                imagePreview.src = cropper.getCroppedCanvas().toDataURL('image/jpeg');
-            }});
+        setTimeout(initCropper, 1000);
     });
 }
 
+function initCropper(): Cropper {
+    cropper = new Cropper(imagePreview, {
+        aspectRatio: 16 / 9,
+        viewMode: 2,
+        zoomable: true,
+        cropBoxMovable: true,
+        crop: function (e) {
+            console.log(e.detail.x);
+            console.log(e.detail.y);
+        }
+    });
+    return cropper;
+}
 
 async function validarFormulario(e: Event): Promise<void> {
     e.preventDefault();
@@ -83,9 +86,9 @@ async function validarFormulario(e: Event): Promise<void> {
         try {
             let prod: Product = new Product({ title, description, price, category, mainPhoto });
             await prod.post();
-            message = 'All fields are mandatory!';
+            message = 'Product added correctly!';
             showError('success', 'OuuuuYeah!', message, true)
-                .then(() => location.assign('login.html'));
+                .then(() => location.assign('index.html'));
         }
         catch (error) {
             showError('error', 'Oops...', error, true);
@@ -97,17 +100,23 @@ window.addEventListener('DOMContentLoaded', () => {
     imagePreview = document.getElementById('imgPreview') as HTMLImageElement;
     productForm = document.getElementById('newProduct') as HTMLFormElement;
     categories = document.getElementById('category');
-    
+
     getCategories();
 
     productForm.image.addEventListener('change', () => {
-        
+
         convertBase64(productForm.image.files[0]);
     });
-    productForm.image.addEventListener('cropstart', (event: any ) => {
-        console.log(event.detail.originalEvent);
-        console.log(event.detail.action);
-      });
+    
+    document.getElementById('crop_button').addEventListener('click', (event: any) => {
+        if (!cropper) {
+            message = "Preparate para morir! Debes seleccionar una imagen antes";
+            showError('error', 'Has cometido un error!', message, true);
+        } else {
+            imagePreview.src = cropper.getCroppedCanvas().toDataURL('image/jpeg');
+            cropper.destroy();
+        }
+    });
     productForm.addEventListener('submit', validarFormulario);
 
     document.getElementById('logout').addEventListener('click', e => {
