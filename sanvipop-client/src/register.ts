@@ -85,7 +85,7 @@ async function register(e: Event): Promise<void> {
             showError(
                 'error',
                 'Oops.. Algo ha ido mal!',
-                respJson.message || respJson.error,
+                respJson.message.join(' - ') || respJson.error,
                 true
             )
         }

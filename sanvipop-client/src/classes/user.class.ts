@@ -28,8 +28,8 @@ export class User implements IUser {
         await Http.put<void>(`${SERVER}/users/me`, { name, email });
     }
 
-    static async saveAvatar(avatar: string): Promise<string> {
-        const data = await Http.put<string>(`${SERVER}/users/me/photo`, avatar);
+    static async saveAvatar(photo: string): Promise<string> {
+        const data = await Http.put<string>(`${SERVER}/users/me/photo`, {photo});
         return data;
     }
 
@@ -39,7 +39,7 @@ export class User implements IUser {
     }
 
     static async savePassword(password: string): Promise<void> {
-        await Http.put<void>(`${SERVER}/users/me/password`, password);
+        await Http.put<void>(`${SERVER}/users/me/password`, {password});
     }
 
     toHtml(): HTMLDivElement {

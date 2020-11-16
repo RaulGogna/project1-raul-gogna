@@ -37,7 +37,7 @@ async function getProduct(): Promise<Product> {
         return product;
     } catch (error) {
         const respJson = await error.json();
-        showError('error', 'Oops...', respJson.message || respJson.error, true);
+        showError('error', 'Oops...', respJson.message.join(' - ') || respJson.error, true);
     }
 }
 

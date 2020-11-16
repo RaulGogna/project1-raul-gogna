@@ -31,7 +31,7 @@ async function login(e: Event) {
         location.assign('index.html');
     } catch (error) {
         const respJson = await error.json();
-        showError('error', 'Oops...', respJson.message || respJson.error, true);
+        showError('error', 'Oops...', respJson.message.join(' - ') || respJson.error, true);
     }
 }
 

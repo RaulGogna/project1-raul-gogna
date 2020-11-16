@@ -34,7 +34,7 @@ async function getProfile(): Promise<User> {
         return userProfile;
     } catch (error) {
         const respJson = await error.json();
-        showError('error', 'Oops...', respJson.message || respJson.error, true);
+        showError('error', 'Oops...', respJson.message.join(' - ') || respJson.error, true);
     }
 }
 

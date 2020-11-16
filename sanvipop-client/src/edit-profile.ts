@@ -91,11 +91,13 @@ async function saveAvatar(e: Event): Promise<void> {
     if (!image) showError('error', 'Oops...', message, true);
     else {
         try {
-            await User.saveAvatar(imgPreview.src);
+            let photoAvatar = imgPreview.src;
+            await User.saveAvatar(photoAvatar);
             message = 'Avatar updated successfully!';
             showError('success', 'OuuuuYeah!', message, true);
         } catch (error) {
-            showError('error', 'Oops...', error, true);
+            const respJson = await error.json();
+            showError('error', 'Oops...', respJson.message.join(' - ') || respJson.error, true);
         }
     }
 }
@@ -121,8 +123,10 @@ async function savePassword(e: Event): Promise<void> {
             await User.savePassword(password);
             message = 'Password updated!';
             showError('success', 'OuuuuYeah!', message, true);
+            psswForm.reset();
         } catch (error) {
-            showError('error', 'Oops...', error, true);
+            const respJson = await error.json();
+            showError('error', 'Oops...', respJson.message || respJson.error, true);
         }
     }
 }
