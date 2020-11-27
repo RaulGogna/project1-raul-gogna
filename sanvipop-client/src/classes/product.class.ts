@@ -63,6 +63,7 @@ export class Product implements IProduct {
                 newCard.remove();
             });
         }
+        
         return newCard;
     }
 }

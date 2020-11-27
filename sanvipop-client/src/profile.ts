@@ -11,6 +11,8 @@ let marker: mapboxgl.Marker = null;
 const token: string = MAPBOX_TOKEN;
 let userProfile: User = null;
 
+Auth.checkToken().catch(() => location.assign('login.html'));
+
 function showError(textIcon: string, title: string, contexText: string, ok: true) {
     Swal.fire({
         icon: textIcon as SweetAlertIcon,
@@ -53,6 +55,7 @@ async function getLocation() {
     map = createMap(userProfile);
     marker = createMarker('red', userProfile);
 }
+
 function createMarker(color: string, user: User): mapboxgl.Marker {
     return new mapboxgl.Marker({ color })
         .setLngLat(new mapboxgl.LngLat(userProfile.lng, userProfile.lat))

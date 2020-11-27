@@ -19,6 +19,8 @@ let psswForm: HTMLFormElement = null;
 let cropper: Cropper = null;
 let message: string = '';
 
+Auth.checkToken().catch(() => location.assign('login.html'));
+
 function showError(textIcon: string, title: string, textContext: string, ok: true) {
     Swal.fire({
         icon: textIcon as SweetAlertIcon,

@@ -6,10 +6,13 @@ import { MAPBOX_TOKEN } from "./constants";
 
 let container: HTMLDivElement = null;
 let mapDiv: HTMLDivElement = null;
+let deleteProduct: HTMLButtonElement = null;
 let map: mapboxgl.Map = null;
 let marker: mapboxgl.Marker = null;
 const token: string = MAPBOX_TOKEN;
 let product: Product = null;
+
+Auth.checkToken().catch(() => location.assign('login.html'));
 
 function showError(textIcon: string, title: string, contexText: string, ok: true) {
     Swal.fire({
@@ -65,8 +68,15 @@ function createMarker(color: string, product: Product): mapboxgl.Marker {
 window.addEventListener('DOMContentLoaded', () => {
     container = document.getElementById('productContainer') as HTMLDivElement;
     mapDiv = document.getElementById('map') as HTMLDivElement;
+    // deleteProduct = document.querySelector('.btn.btn-danger.btn-sm') as HTMLButtonElement || null;
 
     getLocation();
+
+    // if(deleteProduct)
+    //     deleteProduct.addEventListener('click', () =>{
+    //     location.assign('index.html');
+    // });
+
     document.getElementById('logout').addEventListener('click', e => {
         Auth.logout();
         location.assign('login.html');

@@ -16,6 +16,8 @@ let categories: HTMLElement = null;
 let message: string = '';
 let cropper: Cropper = null;
 
+Auth.checkToken().catch(() => location.assign('login.html'));
+
 function showError(textIcon: string, title: string, textContext: string, ok: true): Promise<SweetAlertResult<any>> {
     return Swal.fire({
         icon: textIcon as SweetAlertIcon,
